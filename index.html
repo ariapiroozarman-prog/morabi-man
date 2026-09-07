@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>⚽ مربی من</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#07111f;color:#eef5ff}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:10px 13px;background:#1769aa;color:#fff}
+button:active{transform:scale(.98)}
+.wrap{max-width:900px;margin:auto;padding:12px 12px 90px}
+header{background:linear-gradient(135deg,#0e6b4b,#114d87);padding:18px;border-radius:18px;box-shadow:0 8px 30px #0005}
+h1{margin:0 0 7px;font-size:25px}.sub{opacity:.82;font-size:13px}
+.badge{display:inline-block;background:#ffd54a;color:#172000;border-radius:20px;padding:4px 9px;font-size:12px;font-weight:bold}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.stat{background:#ffffff15;padding:9px 12px;border-radius:12px}
+nav{position:sticky;bottom:8px;z-index:10;display:flex;gap:6px;background:#091827ee;padding:8px;border-radius:16px;margin-top:14px;backdrop-filter:blur(8px)}
+nav button{flex:1;font-size:12px;background:#14283d}.active{background:#18885e!important}
+section{display:none;margin-top:14px}.show{display:block}
+.card{background:#0d1d2e;border:1px solid #ffffff12;border-radius:17px;padding:14px;margin-bottom:12px}
+.card h2{font-size:18px;margin:0 0 12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input,select{background:#081522;color:#fff;border:1px solid #29425c;border-radius:11px;padding:10px;outline:none}
+input{width:100%}.small{font-size:12px;opacity:.75}
+.chat{height:330px;overflow:auto;background:#081522;border-radius:13px;padding:10px}
+.msg{padding:8px 10px;border-bottom:1px solid #ffffff09}.name{font-weight:bold;color:#69d8ff}.bot{color:#ffd54a}
+.pitch{position:relative;height:430px;border-radius:18px;background:linear-gradient(#18734a,#125f3d);border:3px solid #e9fff3;overflow:hidden}
+.pitch:before{content:"";position:absolute;inset:50% 0 auto;border-top:2px solid #d8f9e4}
+.circle{position:absolute;width:95px;height:95px;border:2px solid #d8f9e4;border-radius:50%;left:calc(50% - 47px);top:calc(50% - 47px)}
+.slot{position:absolute;transform:translate(-50%,-50%);width:92px;text-align:center}
+.player{background:#fff;color:#08203a;border-radius:22px;padding:7px 5px;font-size:11px;box-shadow:0 4px 10px #0005}
+.players{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.players button{background:#203b55}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px 5px;border-bottom:1px solid #ffffff12;text-align:center}
+th{color:#7edcff}
+.notice{background:#132d1f;border:1px solid #2d8a59;padding:10px;border-radius:12px;margin:8px 0}
+.warn{background:#35220f;border:1px solid #a36b20;padding:10px;border-radius:12px;margin:8px 0}
+.bracket{display:grid;gap:8px}.match{background:#081522;padding:10px;border-radius:12px}
+.footer{opacity:.6;text-align:center;font-size:11px;margin-top:20px}
+
+.creator-profile{display:flex;align-items:center;gap:6px;cursor:pointer}
+.avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #4aa3ff}
+.bluecheck{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:#1687ff;color:#fff;font-weight:900;font-size:12px;box-shadow:0 0 0 2px #07111f}
+.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.profile-card{background:#081522;border:1px solid #ffffff12;border-radius:15px;padding:12px;text-align:center}
+.profile-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #2d8cff;margin:auto auto 8px;display:block}
+.profile-name{font-size:18px;font-weight:bold}.bluecheck.big{width:22px;height:22px;font-size:13px;vertical-align:middle}
+.ban-notice{background:#241518;border:2px solid #ff5263;border-radius:15px;padding:16px;margin:8px 0;text-align:center}
+.ban-title{font-size:18px;font-weight:900;line-height:1.8}
+.ban-code{margin-top:10px;font-size:20px;font-weight:900;color:#ffd54a;background:#120f08;border-radius:11px;padding:10px}
+
+.user-avatar{width:78px;height:78px;border-radius:50%;object-fit:cover;border:3px solid #334155;background:#111827}
+.profile-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.profile-actions{display:flex;flex-wrap:wrap;gap:8px}
+.mod-code{font-family:monospace;font-weight:800;font-size:22px}
+.chat-name{cursor:pointer;text-decoration:underline;text-decoration-color:#475569;text-underline-offset:3px}
+.creator-message{border:1px solid #2563eb;background:rgba(37,99,235,.10);padding:8px;border-radius:12px}
+
+.creator-badge-top,.moderator-badge-top{display:block;font-size:12px;font-weight:900;margin-bottom:3px}
+.creator-badge-top{color:#60a5fa}
+.moderator-badge-top{color:#fbbf24}
+.goldcheck{display:inline-flex;width:19px;height:19px;align-items:center;justify-content:center;border-radius:50%;background:#f59e0b;color:#111827;font-size:12px;font-weight:900;margin-left:4px}
+
+.msg-wrap{position:relative;display:flex;align-items:flex-start;gap:6px}
+.msg-main{flex:1;min-width:0}
+.msg-dots{border:0!important;background:transparent!important;padding:2px 6px!important;font-size:20px!important;min-width:34px;opacity:.75}
+.msg-dots:hover{opacity:1}
+.msg-menu{position:absolute;right:4px;top:28px;z-index:50;width:190px;background:#111827;border:1px solid #334155;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.35);padding:6px;display:none}
+.msg-menu.open{display:block}
+.msg-menu button{width:100%;text-align:right;margin:2px 0;background:#1f2937}
+.msg-menu .danger{color:#fca5a5}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>⚽ مربی من <span class="badge">نسخه سازنده</span></h1>
+  <div class="sub">بازی مربیگری فوتبال — مدیریت تیم، گپ، لیگ و جام</div>
+  <div class="stats">
+    <div class="stat creator-profile" onclick="openProfile('آرمان آریا')" title="پروفایل سازنده">
+      <img id="myAvatar" class="avatar" src="" alt="" onerror="this.style.display='none'">
+      👤 <b>آرمان آریا</b> <span class="bluecheck">✓</span> <span class="badge">سازنده</span>
+    </div>
+    <div class="stat">🪙 <span id="coins">25000000</span></div>
+    <div class="stat">👥 <span id="online">24</span> آنلاین</div>
+  </div>
+</header>
+
+<section id="home" class="show">
+ <div class="card"><h2>🏠 داشبورد</h2>
+   <div class="notice">سلام آرمان آریا ✓ سازنده! آماده‌ای تیمت رو قهرمان کنی؟</div>
+   <div class="row">
+     <button onclick="showTab('team')">ترکیب تیم</button>
+     <button onclick="showTab('league')">لیگ برتر</button>
+     <button onclick="showTab('cup')">جام حذفی</button>
+     <button onclick="showTab('public')">گپ عمومی</button>
+   </div>
+ </div>
+ <div class="card"><h2>📢 اطلاعیه</h2><div class="small">مسابقات لیگ برتر هر روز برگزار می‌شوند و فصل ۷ روزه است.</div></div>
+</section>
+
+<section id="public">
+ <div class="card"><h2>💬 گپ عمومی <span class="badge">✓ نظارت</span></h2>
+   <div class="chat" id="publicChat"></div>
+   <div class="row" style="margin-top:8px">
+    <input id="publicInput" placeholder="پیام خودت را بنویس..." style="flex:1">
+    <button onclick="sendPublic()">ارسال</button>
+   </div>
+ </div>
+</section>
+
+<section id="team">
+ <div class="card"><h2>🟢 ترکیب 4-3-3</h2>
+  <div class="pitch" id="pitch">
+   <div class="circle"></div>
+   <div class="slot" style="left:50%;top:91%">🧤 <div class="player" id="p0">دروازه‌بان</div></div>
+   <div class="slot" style="left:18%;top:70%">🛡️ <div class="player" id="p1">دفاع چپ</div></div>
+   <div class="slot" style="left:39%;top:73%">🛡️ <div class="player" id="p2">دفاع وسط</div></div>
+   <div class="slot" style="left:61%;top:73%">🛡️ <div class="player" id="p3">دفاع وسط</div></div>
+   <div class="slot" style="left:82%;top:70%">🛡️ <div class="player" id="p4">دفاع راست</div></div>
+   <div class="slot" style="left:28%;top:49%">⚙️ <div class="player" id="p5">هافبک</div></div>
+   <div class="slot" style="left:50%;top:53%">⚙️ <div class="player" id="p6">هافبک</div></div>
+   <div class="slot" style="left:72%;top:49%">⚙️ <div class="player" id="p7">هافبک</div></div>
+   <div class="slot" style="left:20%;top:22%">⚡ <div class="player" id="p8">وینگر چپ</div></div>
+   <div class="slot" style="left:50%;top:15%">⚽ <div class="player" id="p9">مهاجم</div></div>
+   <div class="slot" style="left:80%;top:22%">⚡ <div class="player" id="p10">وینگر راست</div></div>
+  </div>
+  <div class="small" style="margin-top:10px">یک جایگاه را انتخاب کن، سپس بازیکن را بزن.</div>
+  <div class="players" id="players"></div>
+ </div>
+</section>
+
+<section id="private">
+ <div class="card"><h2>🔒 چت خصوصی</h2>
+  <select id="privateUser"><option>رضا</option><option>حسین</option><option>علی</option><option>سینا</option></select>
+  <div class="chat" id="privateChat" style="height:250px;margin-top:9px"></div>
+  <div class="row" style="margin-top:8px"><input id="privateInput" placeholder="پیام خصوصی..."><button onclick="sendPrivate()">ارسال</button></div>
+ </div>
+</section>
+
+<section id="league">
+ <div class="card"><h2>🏆 لیگ برتر — ۷ تیم / ۷ روز</h2>
+  <div class="notice">هر روز یک هفته مسابقه داریم. تیم شما در هر روز یک بازی انجام می‌دهد؛ در پایان ۷ روز فصل تمام می‌شود.</div>
+  <div class="row">
+   <button onclick="playLeagueDay()">▶️ انجام بازی امروز</button>
+   <button onclick="resetLeague()">🔄 شروع فصل جدید</button>
+  </div>
+  <p id="leagueStatus" class="small">روز ۱ از ۷</p>
+  <table><thead><tr><th>#</th><th>تیم</th><th>ب</th><th>م</th><th>امتیاز</th><th>گل</th></tr></thead><tbody id="leagueTable"></tbody></table>
+  <h3>📅 برنامه ۷ روزه</h3><div id="leagueSchedule" class="bracket"></div>
+ </div>
+</section>
+
+<section id="cup">
+ <div class="card"><h2>🥇 جام حذفی ۸ تیمی</h2>
+  <div class="notice">ورودی هر باشگاه: ۴۰۰,۰۰۰ سکه — قهرمان: ۳,۰۰۰,۰۰۰ سکه — نایب‌قهرمان: ۱,۰۰۰,۰۰۰ سکه</div>
+  <div class="row"><input id="clubName" placeholder="نام باشگاه خودت"><button onclick="joinCup()">ثبت باشگاه</button></div>
+  <div id="cupSlots" class="bracket" style="margin-top:10px"></div>
+  <div id="cupResult"></div>
+ </div>
+</section>
+
+
+<section id="profile">
+ <div class="card">
+   <h2>👤 پروفایل کاربر</h2>
+   <div id="profileBox"></div>
+   <button onclick="showTab('public')">↩️ برگشت به گپ</button>
+ </div>
+</section>
+
+<section id="creator">
+ <div class="card"><h2>🛠️ پنل سازنده — آرمان آریا ✓</h2>
+  <div class="notice">🛠️ مدیریت کاربران، ناظران و محرومیت‌ها</div>
+  <input id="userSearch" placeholder="نام کاربر یا باشگاه را بنویس...">
+  <div class="row" style="margin-top:8px">
+    <button onclick="findUser()">🔎 پیدا کردن</button><button onclick="openSelectedProfile()">👤 باز کردن پروفایل</button>
+    <button onclick="clearSelection()">پاک کردن انتخاب</button>
+  </div>
+  <div id="selectedInfo" class="warn">هنوز کاربری انتخاب نشده.</div>
+  <div class="row">
+    <button onclick="promoteSelected()">✓ ناظر کردن</button>
+    <button onclick="demoteSelected()">↘ تنزیل ناظر</button>
+    <button onclick="banSelected()">🚫 محروم ۲۴ ساعته</button>
+    <button onclick="permanentBanSelected()" class="danger">⛔ بن دائمی</button>
+    <button onclick="unbanSelected()">♻️ رفع بن</button>
+      <div class="card" style="margin-top:12px">
+        <b>🖼️ عکس پروفایل کاربر انتخاب‌شده</b>
+        <input id="userAvatarInput" type="file" accept="image/*" style="margin-top:8px">
+        <button onclick="saveSelectedAvatar()">📸 ثبت عکس کاربر</button>
+      </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3 style="margin:0 0 8px">🖼️ عکس پروفایل سازنده</h3>
+    <input id="avatarInput" type="file" accept="image/*">
+    <button onclick="saveAvatar()" style="margin-top:8px">📸 ثبت عکس پروفایل</button>
+    <div class="small" style="margin-top:6px">عکس فقط روی همین مرورگر ذخیره می‌شود.</div>
+  </div>
+
+  <div class="small" style="margin-top:10px">هر محرومیت با نام باشگاه و کد ناظری که محروم کرده در گپ عمومی ثبت می‌شود.</div>
+ </div>
+</section>
+
+<nav>
+ <button data-tab="home" class="active" onclick="showTab('home')">🏠</button>
+ <button data-tab="public" onclick="showTab('public')">💬</button>
+ <button data-tab="team" onclick="showTab('team')">⚽</button>
+ <button data-tab="league" onclick="showTab('league')">🏆</button>
+ <button data-tab="cup" onclick="showTab('cup')">🥇</button>
+ <button data-tab="creator" onclick="showTab('creator')">🛠️</button>
+</nav>
+<div class="footer">مربی من • نسخه یک‌فایلی • اطلاعات داخل همین مرورگر ذخیره می‌شود</div>
+</div>
+
+<script>
+const me="آرمان آریا";
+const moderatorCode="۱";
+let coins=25000000;
+const users={
+ "رضا":{club:"استقلال ایران",role:"moderator"},
+ "مهدی":{club:"سپاهان",role:"user"},
+ "حسین":{club:"پرسپولیس ایران",role:"user"},
+ "علی":{club:"تراکتور",role:"user"},
+ "سینا":{club:"ذوب آهن",role:"user"},
+ "پارسا":{club:"گل‌گهر",role:"user"},
+ "آرین":{club:"فولاد",role:"user"},
+ "دانیال":{club:"ملوان",role:"user"},
+ "کیان":{club:"نساجی",role:"user"},
+ "بردیا":{club:"آلومینیوم",role:"user"},
+ "سامان":{club:"خیبر",role:"user"},
+ "یاسین":{club:"شمس آذر",role:"user"}
+};
+let selectedUser=null;
+let savedUsers=null;
+try{ savedUsers=JSON.parse(localStorage.getItem('morabi_users')||'null'); }catch(e){}
+if(savedUsers && typeof savedUsers==='object'){ Object.keys(savedUsers).forEach(k=>{ if(users[k]) users[k]={...users[k],...savedUsers[k]}; }); }
+
+
+const sample=[
+ ["رضا","سلام بچه‌ها 👋"],
+ ["مهدی","امروز بازی داریم؟"],
+ ["حسین","پرسپولیس آماده‌ست 🔥"],
+ ["علی","بریم برای برد 💪"],
+ ["سینا","ترکیب رو چیدی؟"],
+ ["پارسا","لیگ برتر خیلی خفنه 😎"],
+ ["آرین","جام ۸ تیمی هم ثبت نام کردم"],
+ ["دانیال","موفق باشید بچه‌ها ❤️"],
+ ["کیان","گپ خیلی شلوغ شده 😂"],
+ ["بردیا","امشب بازی رو از دست ندید"],
+ ["سامان","آرمان، پنل سازنده عالیه"],
+ ["یاسین","یا علی برای قهرمانی"]
+];
+
+function isModerator(u){ return !!u && (u.role==='ناظر' || u.role==='moderator'); }
+function isPermanentlyBanned(u){ return !!u && u.permanentBan===true; }
+function isTemporarilyBanned(u){ return !!u && u.bannedUntil && u.bannedUntil>Date.now(); }
+function isBanned(u){ return isPermanentlyBanned(u) || isTemporarilyBanned(u); }
+function banMessage(club, permanent){
+  return `<div class=\"ban-notice\"><div class=\"ban-title\">⛔ کلاب ( ${club} ) ${permanent?'به صورت دائمی از بازی بن شد و دیگر اجازه ورود به بازی را ندارد.':'به مدت ۲۴ ساعت از گپ عمومی محروم شد.'}</div></div>`;
+}
+
+function showTab(id){
+ document.querySelectorAll("section").forEach(s=>s.classList.remove("show"));
+ document.getElementById(id).classList.add("show");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+ if(id==="league") renderLeague(); if(id==="profile" && selectedUser) renderProfile(selectedUser);
+}
+function addPublic(name,text,role){
+  const box=document.getElementById('publicChat');
+  if(!box) return;
+  const isCreator=name==='آرمان آریا';
+  const isModerator=users[name] && isModerator(users[name]);
+  const badge=isCreator
+    ? `<div class="creator-badge-top"><span class="bluecheck">✓</span> سازنده</div>`
+    : (isModerator ? `<div class="moderator-badge-top"><span class="goldcheck">✓</span> ناظر</div>` : '');
+  const safeName=String(name).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+  const msgId='msg_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+  const safeText=String(text).replace(/`/g,"\\`");
+  const menu=`
+    <button onclick="reportMessage('${safeName}','${msgId}')">🚩 گزارش</button>
+    <button class="danger" ${isModerator||isCreator ? `onclick="banFromChat('${safeName}')"` : `onclick="noModeratorAccess()"`} >🚫 محروم کردن${isModerator||isCreator?'':' 🔒'}</button>
+    <button onclick="copyMessage('${msgId}')">📋 کپی کردن پیام</button>`;
+  const htmlMsg=`<div class="msg ${isCreator?'creator-message':''}" id="${msgId}" data-message="${safeText.replace(/"/g,'&quot;')}">
+    <div class="msg-wrap">
+      <div class="msg-main">
+        ${badge}
+        <div class="msg-name"><b class="chat-name" onclick="openProfile('${safeName}')">${name}</b></div>
+        <div class="msg-text">${text}</div>
+      </div>
+      <button class="msg-dots" onclick="toggleMsgMenu('${msgId}')" aria-label="گزینه‌های پیام">⋮</button>
+      <div class="msg-menu" id="${msgId}_menu">${menu}</div>
+    </div>
+  </div>`;
+  box.insertAdjacentHTML('beforeend',htmlMsg);
+  box.scrollTop=box.scrollHeight;
+}
+sample.forEach(x=>addPublic(x[0],x[1]));
+addPublic(me,"✓ سازنده آنلاین است و گپ را مدیریت می‌کند.","bot");
+
+let onlineSocket=null;
+function connectOnline(){
+  try{
+    const proto=location.protocol==='https:'?'wss':'ws';
+    onlineSocket=new WebSocket(proto+'://'+location.host);
+    onlineSocket.onopen=()=>{ console.log('🟢 اتصال آنلاین برقرار شد'); };
+    onlineSocket.onmessage=(ev)=>{
+      try{
+        const d=JSON.parse(ev.data);
+        if(d.type==='public_message'){ addPublic(d.name,d.text,d.role||'user'); }
+        if(d.type==='online_count'){ const el=document.getElementById('onlineCount'); if(el) el.textContent=d.count; }
+      }catch(e){}
+    };
+    onlineSocket.onclose=()=>{ setTimeout(connectOnline,3000); };
+  }catch(e){}
+}
+
+function sendPublic(){
+  const meUser=users['آرمان آریا'];
+  if(isBanned(meUser)) return alert('⛔ دسترسی شما به بازی مسدود است.');
+  const input=document.getElementById('publicInput');
+  if(!input) return;
+  const text=input.value.trim();
+  if(!text) return;
+  if(onlineSocket && onlineSocket.readyState===WebSocket.OPEN){
+    onlineSocket.send(JSON.stringify({type:'public_message',name:'آرمان آریا',text,role:'سازنده'}));
+  }else{
+    addPublic('آرمان آریا',text,'سازنده');
+  }
+  input.value='';
+}
+function sendPrivate(){
+ const v=document.getElementById("privateInput").value.trim(); if(!v)return;
+ const u=document.getElementById("privateUser").value;
+ document.getElementById("privateChat").innerHTML+=`<div class="msg"><span class="name">${me}</span>: ${v}</div><div class="msg"><span class="name">${u}</span>: پیام دریافت شد 👍</div>`;
+ document.getElementById("privateInput").value="";
+}
+document.getElementById("publicInput").addEventListener("keydown",e=>{if(e.key==="Enter")sendPublic()});
+document.getElementById("privateInput").addEventListener("keydown",e=>{if(e.key==="Enter")sendPrivate()});
+
+const playerNames=["علیرضا","مهدی","حسین","رضا","سعید","امیر","آرمان","یاسین","پارسا","سامان","علی"];
+let selectedSlot=0;
+for(let i=0;i<11;i++){
+ const b=document.createElement("button"); b.textContent=playerNames[i]; b.onclick=()=>{selectedSlot=i;document.querySelectorAll("#players button").forEach(x=>x.style.outline="");b.style.outline="2px solid #ffd54a"}; document.getElementById("players").appendChild(b);
+}
+document.querySelectorAll(".slot").forEach((s,i)=>s.addEventListener("click",()=>selectedSlot=i));
+document.querySelectorAll(".slot .player").forEach((x,i)=>x.textContent=playerNames[i]);
+
+const leagueTeams=["آرمان FC","پرسپولیس ایران","استقلال ایران","سپاهان","تراکتور","گل‌گهر","فولاد"];
+let leagueDay=0;
+let leagueStats=leagueTeams.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0,gf:0}));
+const opponents=["پرسپولیس ایران","استقلال ایران","سپاهان","تراکتور","گل‌گهر","فولاد","پرسپولیس ایران"];
+
+function openProfile(name){
+  if(name==="آرمان آریا"){
+    document.getElementById("profileBox").innerHTML=`<div class="profile-card">
+      <img id="profileMyAvatar" class="profile-avatar" src="${localStorage.getItem("myAvatar")||""}" onerror="this.style.display='none'">
+      <div class="profile-name">آرمان آریا <span class="bluecheck big">✓</span></div>
+      <div class="small" style="margin:6px 0">سازنده بازی • کد سازنده: ۱ • کد ناظر: ۱</div>
+      <div class="notice">✓ حساب سازنده تأیید شده است</div>
+    </div>`;
+    showTab("profile");
+  }else{
+    selectedUser=name;
+    renderProfile(name);
+    showTab("profile");
+  }
+}
+function openSelectedProfile(){
+  if(!selectedUser){alert("اول یک کاربر را پیدا کن.");return}
+  openProfile(selectedUser);
+}
+function renderProfile(name){
+  const box=document.getElementById('profileBox');
+  if(!box) return;
+  if(name==='آرمان آریا'){
+    box.innerHTML=`<div class="profile-card">
+      <div class="profile-head">
+        ${localStorage.getItem('myAvatar')?`<img class="user-avatar" src="${localStorage.getItem('myAvatar')}" alt="پروفایل">`:`<div class="profile-avatar">👤</div>`}
+        <div>
+          <div class="profile-name">آرمان آریا <span class="bluecheck big">✓</span></div>
+          <div class="muted">نقش: سازنده</div>
+          <div class="muted">کد سازنده: فقط برای خود سازنده</div>
+        </div>
+      </div>
+    </div>`;
+    return;
+  }
+  const u=users[name];
+  if(!u){box.innerHTML='<div class="muted">کاربر پیدا نشد.</div>';return;}
+  box.innerHTML=`<div class="profile-card">
+    <div class="profile-head">
+      ${u.avatar?`<img class="user-avatar" src="${u.avatar}" alt="پروفایل">`:`<div class="profile-avatar">👤</div>`}
+      <div>
+        <div class="profile-name">${name}${isModerator(u)?` <span class="goldcheck">✓</span>`:''}</div>
+        <div class="muted">باشگاه: ${u.club}</div>
+        <div class="muted">نقش: ${u.role}</div>
+        ${u.bannedUntil && u.bannedUntil>Date.now()?`<div class="ban-title">🚫 محروم تا ${new Date(u.bannedUntil).toLocaleString('fa-IR')}</div>`:''}
+      </div>
+    </div>
+  </div>
+  <div class="profile-actions">
+    ${isModerator(u)
+      ? `<button onclick="demoteFromProfile()">↘ تنزیل ناظر</button>`
+      : `<button onclick="promoteFromProfile()">✓ ناظر کردن</button>`}
+    <button onclick="banFromProfile()">🚫 محروم ۲۴ ساعته</button>
+  </div>`;
+}
+function promoteFromProfile(){
+  if(!selectedUser || !users[selectedUser]) return;
+  if(selectedUser==='آرمان آریا') return alert('سازنده خودش بالاترین سطح دسترسی را دارد.');
+  const code=prompt('کد ناظر را وارد کن (مثلاً ۸):');
+  if(code===null) return;
+  const clean=code.trim();
+  if(!clean) return alert('کد نمی‌تواند خالی باشد.');
+  users[selectedUser].role='ناظر';
+  users[selectedUser].moderatorCode=clean;
+  saveGameState();
+  addPublic('🤖 سیستم',`✓ ${selectedUser} ناظر شد.`,'bot');
+  renderProfile(selectedUser);
+}
+
+function renderLeague(){
+ document.getElementById("leagueStatus").textContent=`روز ${Math.min(leagueDay+1,7)} از ۷`;
+ const sorted=[...leagueStats].sort((a,b)=>b.pts-a.pts||b.gf-a.gf);
+ document.getElementById("leagueTable").innerHTML=sorted.map((x,i)=>`<tr><td>${i+1}</td><td>${x.team}</td><td>${x.p}</td><td>${x.w}-${x.d}-${x.l}</td><td><b>${x.pts}</b></td><td>${x.gf}</td></tr>`).join("");
+ document.getElementById("leagueSchedule").innerHTML=opponents.map((o,i)=>`<div class="match">📅 روز ${i+1}: آرمان FC 🆚 ${o} ${i<leagueDay?" — انجام شد":i===leagueDay?" — امروز":" — در انتظار"}</div>`).join("");
+}
+function playLeagueDay(){
+ if(leagueDay>=7){alert("فصل ۷ روزه تمام شده؛ فصل جدید را شروع کن.");return}
+ const meS=leagueStats[0], opp=leagueStats.find(x=>x.team===opponents[leagueDay]);
+ let a=Math.floor(Math.random()*4), b=Math.floor(Math.random()*4);
+ if(a===b){meS.d++;opp.d++;meS.pts++;opp.pts++}else if(a>b){meS.w++;opp.l++;meS.pts+=3}else{meS.l++;opp.w++;opp.pts+=3}
+ meS.p++;opp.p++;meS.gf+=a;opp.gf+=b;
+ leagueDay++; renderLeague();
+ addPublic("🤖 لیگ",`نتیجه روز ${leagueDay}: آرمان FC ${a} - ${b} ${opp.team}`,"bot");
+}
+function resetLeague(){
+ leagueDay=0; leagueStats=leagueTeams.map(t=>({team:t,p:0,w:0,d:0,l:0,pts:0,gf:0}));renderLeague();
+}
+
+let cupTeams=[];
+function updateCoins(){document.getElementById("coins").textContent=coins.toLocaleString("en-US")}
+function joinCup(){
+ const n=document.getElementById("clubName").value.trim(); if(!n){alert("اول نام باشگاه را بنویس.");return}
+ if(cupTeams.includes(n)){alert("این باشگاه قبلاً ثبت شده.");return}
+ if(cupTeams.length>=8){alert("ظرفیت جام کامل است.");return}
+ if(coins<400000){alert("سکه کافی نیست.");return}
+ coins-=400000;updateCoins();cupTeams.push(n);renderCup();
+ if(cupTeams.length===8) startCup();
+}
+function renderCup(){
+ document.getElementById("cupSlots").innerHTML=Array.from({length:8},(_,i)=>`<div class="match">${i+1}. ${cupTeams[i]||"جای خالی"}</div>`).join("");
+}
+function startCup(){
+ const shuffled=[...cupTeams].sort(()=>Math.random()-.5);
+ let semi=[]; for(let i=0;i<8;i+=2)semi.push([shuffled[i],shuffled[i+1]]);
+ let winners=semi.map(m=>m[Math.floor(Math.random()*2)]);
+ let final=[winners[0],winners[1]];
+ let champ=final[Math.floor(Math.random()*2)], runner=final.find(x=>x!==champ);
+ coins+=3000000; updateCoins();
+ document.getElementById("cupResult").innerHTML=`<div class="notice">🏆 قهرمان: <b>${champ}</b> — جایزه ۳,۰۰۰,۰۰۰ سکه</div><div class="warn">🥈 نایب‌قهرمان: <b>${runner}</b> — جایزه ۱,۰۰۰,۰۰۰ سکه</div><div class="small">پاداش قهرمان به موجودی این نسخه اضافه شد.</div>`;
+}
+
+function findUser(){
+ const q=document.getElementById("userSearch").value.trim().toLowerCase();
+ const key=Object.keys(users).find(n=>n.toLowerCase().includes(q)||users[n].club.toLowerCase().includes(q));
+ if(!q||!key){document.getElementById("selectedInfo").textContent="کاربر پیدا نشد.";selectedUser=null;return}
+ selectedUser=key;showSelected();
+}
+function showSelected(){
+ const u=users[selectedUser];
+ document.getElementById("selectedInfo").innerHTML=`<div onclick="openSelectedProfile()" style="cursor:pointer">
+      👤 <b>${selectedUser}</b> <span class="bluecheck">✓</span> &nbsp; | &nbsp; 🏟️ <b>${u.club}</b> &nbsp; | &nbsp; نقش: <b>${u.role==="moderator"?"ناظر":"کاربر"}</b>
+      <div class="small">برای مدیریت، روی پروفایل بزن.</div>
+    </div>`;
+}
+function clearSelection(){selectedUser=null;document.getElementById("selectedInfo").textContent="هنوز کاربری انتخاب نشده."}
+function promoteSelected(){
+  if(!selectedUser || !users[selectedUser]) return alert('اول یک کاربر را پیدا کن.');
+  if(selectedUser==='آرمان آریا') return alert('سازنده خودش بالاترین سطح دسترسی را دارد.');
+  const code=prompt('کد ناظر را وارد کن (مثلاً ۸):');
+  if(code===null) return;
+  const clean=code.trim();
+  if(!clean) return alert('کد نمی‌تواند خالی باشد.');
+  users[selectedUser].role='ناظر';
+  users[selectedUser].moderatorCode=clean;
+  saveGameState();
+  addPublic('🤖 سیستم',`✓ ${selectedUser} به عنوان ناظر انتخاب شد.`,'bot');
+  showSelected();
+  renderProfile(selectedUser);
+}
+function demoteSelected(){
+  if(!selectedUser || !users[selectedUser]) return alert('اول یک کاربر را پیدا کن.');
+  if(selectedUser==='آرمان آریا') return;
+  users[selectedUser].role='کاربر';
+  delete users[selectedUser].moderatorCode;
+  saveGameState();
+  addPublic('🤖 سیستم',`↘ ${selectedUser} از ناظری تنزیل شد.`,'bot');
+  showSelected();
+  renderProfile(selectedUser);
+}
+function banSelected(){
+ if(!selectedUser || !users[selectedUser]){alert('اول یک کاربر را پیدا کن.');return}
+ const club=users[selectedUser].club||selectedUser;
+ users[selectedUser].bannedUntil=Date.now()+24*60*60*1000;
+ users[selectedUser].permanentBan=false;
+ saveGameState();
+ addPublic('🤖 نظارت',banMessage(club,false),'bot');
+ showSelected();
+}
+function permanentBanSelected(){
+ if(!selectedUser || !users[selectedUser]){alert('اول یک کاربر را پیدا کن.');return}
+ if(selectedUser==='آرمان آریا'){alert('سازنده قابل بن نیست.');return}
+ const club=users[selectedUser].club||selectedUser;
+ if(!confirm(`⛔ ${selectedUser} به صورت دائمی بن شود؟\nاین کاربر دیگر اجازه ورود به بازی را نخواهد داشت.`)) return;
+ users[selectedUser].permanentBan=true;
+ users[selectedUser].bannedUntil=0;
+ saveGameState();
+ addPublic('🤖 نظارت',banMessage(club,true),'bot');
+ showSelected();
+ renderProfile(selectedUser);
+}
+function unbanSelected(){
+ if(!selectedUser || !users[selectedUser]){alert('اول یک کاربر را پیدا کن.');return}
+ users[selectedUser].permanentBan=false;
+ users[selectedUser].bannedUntil=0;
+ saveGameState();
+ addPublic('🤖 نظارت',`♻️ بن/محرومیت ${selectedUser} برداشته شد.`,'bot');
+ showSelected();
+ renderProfile(selectedUser);
+}
+
+connectOnline();
+document.getElementById("userSearch").addEventListener("keydown",e=>{if(e.key==="Enter")findUser()});
+renderLeague();renderCup();updateCoins();
+const savedAvatar=localStorage.getItem("myAvatar");
+if(savedAvatar){const a=document.getElementById("myAvatar");a.src=savedAvatar;a.style.display="block";}
+
+function saveGameState(){
+  try{localStorage.setItem('morabi_users',JSON.stringify(users));}catch(e){}
+}
+const _oldAddPublic=addPublic;
+addPublic=function(name,text,role){
+  _oldAddPublic(name,text,role);
+  saveGameState();
+};
+const _oldPromote=window.promoteSelected;
+window.addEventListener('beforeunload',saveGameState);
+
+function toggleMsgMenu(id){
+  document.querySelectorAll('.msg-menu.open').forEach(m=>{if(m.id!==id+'_menu')m.classList.remove('open')});
+  const m=document.getElementById(id+'_menu');
+  if(m)m.classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.msg-dots') && !e.target.closest('.msg-menu'))
+    document.querySelectorAll('.msg-menu.open').forEach(m=>m.classList.remove('open'));
+});
+function noModeratorAccess(){
+  alert('🔒 محروم کردن فقط برای ناظرها فعال است.');
+}
+function reportMessage(name,id){
+  addPublic('🤖 سیستم',`🚩 گزارش پیام ${name} ثبت شد.` ,'bot');
+  document.querySelectorAll('.msg-menu.open').forEach(m=>m.classList.remove('open'));
+}
+function copyMessage(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const name=el.querySelector('.msg-name')?.innerText||'';
+  const text=el.querySelector('.msg-text')?.innerText||'';
+  const value=(name+' : '+text).trim();
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(value).then(()=>alert('📋 پیام کپی شد.'));
+  }else{
+    const ta=document.createElement('textarea');ta.value=value;document.body.appendChild(ta);
+    ta.select();document.execCommand('copy');ta.remove();alert('📋 پیام کپی شد.');
+  }
+  document.querySelectorAll('.msg-menu.open').forEach(m=>m.classList.remove('open'));
+}
+function banFromChat(name){
+  if(name==='آرمان آریا') return alert('سازنده قابل محروم شدن نیست.');
+  if(!users[name] || !isModerator(users[name])) return noModeratorAccess();
+  const club=users[name].club||name;
+  users[name].bannedUntil=Date.now()+24*60*60*1000;
+  saveGameState();
+  addPublic('🤖 نظارت',banMessage(club,false),'bot');
+  document.querySelectorAll('.msg-menu.open').forEach(m=>m.classList.remove('open'));
+}
+
+</script>
+</body>
+</html>
